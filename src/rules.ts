@@ -37,35 +37,65 @@ type ObjectRules = { type: Rule };
 type BooleanRules = { type: Rule };
 
 export const string: StringRules = {
-  type: (value) => (typeof value === 'string' ? null : 'type'),
-  email: (value) => ((value as string).match(rEmail) ? null : 'format'),
-  url: (value) => ((value as string).match(rUrl) ? null : 'format'),
-  uuid: (value) => ((value as string).match(rUUID) ? null : 'format'),
-  enum: (accepted) => (value) =>
-    accepted.includes(value as string) ? null : 'enum',
-  min: (num) => (value) => (value as string).length >= num ? null : 'min',
-  max: (num) => (value) => (value as string).length <= num ? null : 'max',
+  type: (value) => {
+    if (typeof value !== 'string') return 'type';
+  },
+  email: (value) => {
+    if (string.type(value) || !(value as string).match(rEmail)) return 'format';
+  },
+  url: (value) => {
+    if (string.type(value) || !(value as string).match(rUrl)) return 'format';
+  },
+  uuid: (value) => {
+    if (string.type(value) || !(value as string).match(rUUID)) return 'format';
+  },
+  enum: (accepted) => (value) => {
+    if (string.type(value) || !accepted.includes(value as string))
+      return 'enum';
+  },
+  min: (num) => (value) => {
+    if (string.type(value) || (value as string).length < num) return 'min';
+  },
+  max: (num) => (value) => {
+    if (string.type(value) || (value as string).length > num) return 'max';
+  },
 };
 
 // All default rules allowed on numbers
 export const number: NumberRules = {
-  type: (value) => (typeof value === 'number' ? null : 'type'),
-  min: (num) => (value) => (value as number) >= num ? null : 'min',
-  max: (num) => (value) => (value as number) <= num ? null : 'max',
+  type: (value) => {
+    if (typeof value !== 'number') return 'type';
+  },
+  min: (num) => (value) => {
+    if (number.type(value) || (value as number) < num) return 'min';
+  },
+  max: (num) => (value) => {
+    if (number.type(value) || (value as number) > num) return 'max';
+  },
 };
 
 export const array: ArrayRules = {
-  type: (value) =>
-    typeof value === 'object' && Array.isArray(value) ? null : 'type',
-  min: (num) => (value) => (value as unknown[]).length >= num ? null : 'min',
-  max: (num) => (value) => (value as unknown[]).length <= num ? null : 'max',
+  type: (value) => {
+    if (typeof value !== 'object' || !Array.isArray(value)) return 'type';
+  },
+  min: (num) => (value) => {
+    if (array.type(value) || (value as unknown[]).length < num) return 'min';
+  },
+  max: (num) => (value) => {
+    if (array.type(value) || (value as unknown[]).length > num) return 'max';
+  },
 };
 
 export const boolean: BooleanRules = {
-  type: (value: unknown) => (typeof value === 'boolean' ? null : 'type'),
+  type: (value) => {
+    if (typeof value !== 'boolean') return 'type';
+  },
 };
 export const object: ObjectRules = {
-  type: (value: unknown) => (typeof value === 'object' ? null : 'type'),
+  type: (value) => {
+    if (typeof value !== 'object') return 'type';
+  },
 };
-export const required: Rule = (value) =>
-  value !== undefined && value !== null ? null : 'required';
+export const required: Rule = (value) => {
+  if (value === undefined || value === null) return 'required';
+};
