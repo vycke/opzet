@@ -10,92 +10,135 @@ const rUrl =
 const rUUID =
   /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
 
+const rIBAN = /^([A-Z]{2}[ \-]?[0-9]{2})(?=(?:[ \-]?[A-Z0-9]){9,30}$)/;
+
 // All default rules allowed on string values
-type StringRules = {
-  type: Rule;
+type BasicRuleSet = { type: Rule };
+type MinMaxRuleSet<T> = BasicRuleSet & {
+  min: (value: T) => Rule;
+  max: (value: T) => Rule;
+};
+
+type StringRules = MinMaxRuleSet<number> & {
   email: Rule;
   url: Rule;
   uuid: Rule;
-  min: (value: number) => Rule;
-  max: (value: number) => Rule;
+  iban: Rule;
   enum: (value: string[]) => Rule;
 };
 
-type NumberRules = {
-  type: Rule;
-  min: (value: number) => Rule;
-  max: (value: number) => Rule;
-};
+function exists(value: unknown): boolean {
+  return value !== undefined && value !== null;
+}
 
-type ArrayRules = {
-  type: Rule;
-  min: (value: number) => Rule;
-  max: (value: number) => Rule;
-};
-
-type ObjectRules = { type: Rule };
-type BooleanRules = { type: Rule };
+function checkType(value: unknown, type: string): boolean {
+  if (type === 'array')
+    return exists(value) && typeof value === 'object' && Array.isArray(value);
+  return exists(value) && typeof value === type;
+}
 
 export const string: StringRules = {
   type: (value) => {
-    if (typeof value !== 'string') return 'type';
+    if (!exists(value)) return;
+    if (!checkType(value, 'string')) return 'type';
   },
   email: (value) => {
-    if (string.type(value) || !(value as string).match(rEmail)) return 'format';
+    if (!checkType(value, 'string')) return;
+    if (!(value as string).match(rEmail)) return 'format';
   },
   url: (value) => {
-    if (string.type(value) || !(value as string).match(rUrl)) return 'format';
+    if (!checkType(value, 'string')) return;
+    if (!(value as string).match(rUrl)) return 'format';
   },
   uuid: (value) => {
-    if (string.type(value) || !(value as string).match(rUUID)) return 'format';
+    if (!checkType(value, 'string')) return;
+    if (!(value as string).match(rUUID)) return 'format';
+  },
+  iban: (value) => {
+    if (!checkType(value, 'string')) return;
+    if (!(value as string).match(rIBAN)) return 'format';
   },
   enum: (accepted) => (value) => {
-    if (string.type(value) || !accepted.includes(value as string))
-      return 'enum';
+    if (!checkType(value, 'string')) return;
+    if (!accepted.includes(value as string)) return 'enum';
   },
   min: (num) => (value) => {
-    if (string.type(value) || (value as string).length < num) return 'min';
+    if (!checkType(value, 'string')) return;
+    if ((value as string).length < num) return 'min';
   },
   max: (num) => (value) => {
-    if (string.type(value) || (value as string).length > num) return 'max';
+    if (!checkType(value, 'string')) return;
+    if ((value as string).length > num) return 'max';
   },
 };
 
 // All default rules allowed on numbers
-export const number: NumberRules = {
+export const number: MinMaxRuleSet<number> = {
   type: (value) => {
-    if (typeof value !== 'number') return 'type';
+    if (!exists(value)) return;
+    if (!checkType(value, 'number')) return 'type';
   },
   min: (num) => (value) => {
-    if (number.type(value) || (value as number) < num) return 'min';
+    if (!checkType(value, 'number')) return;
+    if ((value as number) < num) return 'min';
   },
   max: (num) => (value) => {
-    if (number.type(value) || (value as number) > num) return 'max';
+    if (!checkType(value, 'number')) return;
+    if ((value as number) > num) return 'max';
   },
 };
 
-export const array: ArrayRules = {
+export const array: MinMaxRuleSet<number> = {
   type: (value) => {
-    if (typeof value !== 'object' || !Array.isArray(value)) return 'type';
+    if (!exists(value)) return;
+    if (!checkType(value, 'array')) return 'type';
   },
   min: (num) => (value) => {
-    if (array.type(value) || (value as unknown[]).length < num) return 'min';
+    if (!checkType(value, 'array')) return;
+    if ((value as unknown[]).length < num) return 'min';
   },
   max: (num) => (value) => {
-    if (array.type(value) || (value as unknown[]).length > num) return 'max';
+    if (!checkType(value, 'array')) return;
+    if ((value as unknown[]).length > num) return 'max';
   },
 };
 
-export const boolean: BooleanRules = {
+export const boolean: BasicRuleSet = {
   type: (value) => {
-    if (typeof value !== 'boolean') return 'type';
+    if (!exists(value)) return;
+    if (!checkType(value, 'boolean')) return 'type';
   },
 };
-export const object: ObjectRules = {
+export const object: BasicRuleSet = {
   type: (value) => {
-    if (typeof value !== 'object') return 'type';
+    if (!exists(value)) return;
+    if (!checkType(value, 'object')) return 'type';
   },
 };
 export const required: Rule = (value) => {
-  if (value === undefined || value === null) return 'required';
+  if (!exists(value)) return 'required';
+};
+
+function isValidDate(value: string | number | Date): boolean {
+  if (!exists(value)) return true;
+  try {
+    new Date(value).toISOString();
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+export const datetime: MinMaxRuleSet<string> = {
+  type: (value) => {
+    if (!isValidDate(value as number | string | Date)) return 'type';
+  },
+  min: (datetime) => (value) => {
+    if (!isValidDate(value as number | string | Date)) return;
+    if ((value as string) < datetime) return 'min';
+  },
+  max: (datetime) => (value) => {
+    if (!isValidDate(value as number | string | Date)) return;
+    if ((value as string) > datetime) return 'max';
+  },
 };

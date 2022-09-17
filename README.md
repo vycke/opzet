@@ -32,10 +32,10 @@ import { string, number, boolean, object, array, required } from 'opzet';
 ```
 
 - `required`: checks if the value exists or not. If invalid, returns '_required_';
-- `<string|number|boolean|object|array>.type`: checks if the value is of the correct type. If invalid, returns 'type';
-- `<string|number|array>.min(num: number)`: checks the (inclusive) minimum value/length (e.g. `array.length <= num`). Should be applied as `array.min(3)`. If invalid, returns '_min_';
-- `<string|number|array>.max(num: number)`: checks the (inclusive) maximum value/length (e.g. `array.length <= num`). Should be applied as `array.max(3)`. If invalid, returns '_max_';
-- `string.<email|url|uuid>`: checks if the value is within the correct format. If invalid, returns '_format_';
+- `<string|number|boolean|object|array|datetime>.type`: checks if the value is of the correct type. If invalid, returns 'type';
+- `<string|number|array|datetime>.min(num: number | date)`: checks the (inclusive) minimum value/length (e.g. `array.length <= num`). Should be applied as `array.min(3)`. If invalid, returns '_min_';
+- `<string|number|array|datetime>.max(num: number | date)`: checks the (inclusive) maximum value/length (e.g. `array.length <= num`). Should be applied as `array.max(3)`. If invalid, returns '_max_';
+- `string.<email|url|uuid|iban>`: checks if the value is within the correct format. If invalid, returns '_format_';
 - `string.enum(allowed: string[])`: checks if the value is one of the allowed string values. If invalid, returns '_enum_';
 
 For examples, check the [tests](./tests/index.tests.ts).
