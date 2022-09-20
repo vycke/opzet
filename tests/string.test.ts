@@ -11,8 +11,11 @@ test('string - type & length', () => {
       }
     )
   ).toEqual({
-    key1: ['min', 'max'],
-    key3: ['type'],
+    key1: [
+      { error: 'min', description: 7 },
+      { error: 'max', description: 3 },
+    ],
+    key3: [{ error: 'type' }],
   });
 });
 
@@ -27,7 +30,7 @@ test('string - email', () => {
       }
     )
   ).toEqual({
-    email1: ['format'],
+    email1: [{ error: 'format', description: 'email' }],
   });
 });
 
@@ -41,7 +44,7 @@ test('string - url', () => {
         url3: [string.type, string.url],
       }
     )
-  ).toEqual({ url1: ['format'] });
+  ).toEqual({ url1: [{ error: 'format', description: 'url' }] });
 });
 
 test('string - uuid', () => {
@@ -55,11 +58,11 @@ test('string - uuid', () => {
       }
     )
   ).toEqual({
-    uuid1: ['format'],
+    uuid1: [{ error: 'format', description: 'uuid' }],
   });
 });
 
-test('string - uuid', () => {
+test('string - iban', () => {
   expect(
     validate(
       {
@@ -77,7 +80,7 @@ test('string - uuid', () => {
       }
     )
   ).toEqual({
-    iban4: ['format'],
+    iban4: [{ error: 'format', description: 'iban' }],
   });
 });
 
@@ -92,6 +95,6 @@ test('string - enum', () => {
       }
     )
   ).toEqual({
-    enum1: ['enum'],
+    enum1: [{ error: 'enum', description: ['non'] }],
   });
 });

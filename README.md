@@ -9,7 +9,8 @@
 A lightweight library that allows for object schema validation. A schema is an object where the keys match the keys of the object you want to validate. Within the schema, each key has an array of 'rules' attached. A rule is simply something that returns nothing or a 'string' indicating the error.
 
 ```ts
-type Rule = (value: unknown, obj?: object) => string | null;
+type ValidationError = { error: string; description?: unknown };
+type Rule = (value: unknown, obj?: object) => ValidationError | null;
 type Schema = Record<string, Rule[]>;
 ```
 

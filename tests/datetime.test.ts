@@ -14,7 +14,7 @@ test('datetime - type', () => {
       date3: [datetime.type],
       date4: [datetime.type],
     })
-  ).toEqual({ date3: ['type'] });
+  ).toEqual({ date3: [{ error: 'type' }] });
 });
 
 test('datetime - min/max', () => {
@@ -42,5 +42,11 @@ test('datetime - min/max', () => {
         datetime.min('2023-01-01T00:00:00+00:00'),
       ],
     })
-  ).toEqual({ date2: ['max', 'min'], date3: ['type'] });
+  ).toEqual({
+    date2: [
+      { error: 'max', description: '2021-01-01T00:00:00+00:00' },
+      { error: 'min', description: '2023-01-01T00:00:00+00:00' },
+    ],
+    date3: [{ error: 'type' }],
+  });
 });

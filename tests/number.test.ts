@@ -9,9 +9,14 @@ test('number rules', () => {
       string: [number.type],
       count2: [number.type, number.min(-1), number.max(3)],
     })
-  ).toEqual({ string: ['type'] });
+  ).toEqual({ string: [{ error: 'type' }] });
 
   expect(
     validate(obj, { count: [number.type, number.min(1), number.max(-3)] })
-  ).toEqual({ count: ['min', 'max'] });
+  ).toEqual({
+    count: [
+      { error: 'min', description: 1 },
+      { error: 'max', description: -3 },
+    ],
+  });
 });

@@ -7,5 +7,5 @@ test('object rules', () => {
       key1: [object.type],
       key2: [object.type],
     })
-  ).toEqual({ key2: ['type'] });
+  ).toEqual({ key2: [{ error: 'type' }] });
 });

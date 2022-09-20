@@ -1,9 +1,15 @@
 export * from './rules';
-import type { O, Rule, Schema, ValidationErrors } from './types';
+import type {
+  O,
+  Rule,
+  Schema,
+  ValidationError,
+  ValidationErrors,
+} from './types';
 
 // evaluate a single rule
-function evaluate(rules: Rule[], value: unknown, obj: O): string[] {
-  const errors: string[] = [];
+function evaluate(rules: Rule[], value: unknown, obj: O): ValidationError[] {
+  const errors: ValidationError[] = [];
   rules.forEach((rule) => {
     const res = rule(value, obj);
     if (res) errors.push(res);

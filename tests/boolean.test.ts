@@ -7,5 +7,5 @@ test('boolean rules', () => {
       bool1: [boolean.type],
       bool2: [boolean.type],
     })
-  ).toEqual({ bool2: ['type'] });
+  ).toEqual({ bool2: [{ error: 'type' }] });
 });

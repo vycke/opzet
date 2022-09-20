@@ -11,5 +11,5 @@ test('simple validate, including nested values', () => {
     required: [required],
   };
   expect(validate(obj, schema)).toEqual({});
-  expect(validate({}, schema)).toEqual({ required: ['required'] });
+  expect(validate({}, schema)).toEqual({ required: [{ error: 'required' }] });
 });

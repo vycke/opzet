@@ -10,9 +10,14 @@ test('array - type & length', () => {
       state3: [array.type, array.min(0), array.max(3)],
       state4: [array.type, array.min(0), array.max(3)],
     })
-  ).toEqual({ state3: ['type'], state4: ['type'] });
+  ).toEqual({ state3: [{ error: 'type' }], state4: [{ error: 'type' }] });
 
   expect(
     validate(obj, { state1: [array.type, array.min(1), array.max(-3)] })
-  ).toEqual({ state1: ['min', 'max'] });
+  ).toEqual({
+    state1: [
+      { error: 'min', description: 1 },
+      { error: 'max', description: -3 },
+    ],
+  });
 });
