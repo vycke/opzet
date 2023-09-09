@@ -2,8 +2,7 @@
   "name": "opzet",
   "version": "0.4.0",
   "description": "Object validation and transformation",
-  "main": "dist/index.js",
-  "module": "dist/esm/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -28,7 +27,7 @@
     "deduction",
     "transformation"
   ],
-  "author": "Kevin Pennekamp <github@crinkles.io>",
+  "author": "Kevin Pennekamp <github@crinkles.dev>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/kevtiq/opzet/issues"
