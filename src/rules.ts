@@ -1,4 +1,4 @@
-import { Rule } from './types';
+import { BasicRuleSet, MinMaxRuleSet, Rule, StringRules } from "./types";
 
 // Default Regex expresssions
 const rEmail =
@@ -12,70 +12,55 @@ const rUUID =
 
 const rIBAN = /^([A-Z]{2}[ \-]?[0-9]{2})(?=(?:[ \-]?[A-Z0-9]){9,30}$)/;
 
-// All default rules allowed on string values
-type BasicRuleSet = { type: Rule };
-type MinMaxRuleSet<T> = BasicRuleSet & {
-  min: (value: T) => Rule;
-  max: (value: T) => Rule;
-};
-
-type StringRules = MinMaxRuleSet<number> & {
-  email: Rule;
-  url: Rule;
-  uuid: Rule;
-  iban: Rule;
-  enum: (value: string[]) => Rule;
-};
-
 function exists(value: unknown): boolean {
   return value !== undefined && value !== null;
 }
 
 function checkType(value: unknown, type: string): boolean {
-  if (type === 'array')
-    return exists(value) && typeof value === 'object' && Array.isArray(value);
+  if (type === "array")
+    return exists(value) && typeof value === "object" && Array.isArray(value);
   return exists(value) && typeof value === type;
 }
 
 export const string: StringRules = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, 'string')) return { error: 'type' };
+    if (!checkType(value, "string")) return { error: "type" };
   },
   email: (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if (!(value as string).match(rEmail))
-      return { error: 'format', description: 'email' };
+      return { error: "format", description: "email" };
   },
   url: (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if (!(value as string).match(rUrl))
-      return { error: 'format', description: 'url' };
+      return { error: "format", description: "url" };
   },
   uuid: (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if (!(value as string).match(rUUID))
-      return { error: 'format', description: 'uuid' };
+      return { error: "format", description: "uuid" };
   },
   iban: (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if (!(value as string).match(rIBAN))
-      return { error: 'format', description: 'iban' };
+      return { error: "format", description: "iban" };
   },
   enum: (accepted) => (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if (!accepted.includes(value as string))
-      return { error: 'enum', description: accepted };
+      return { error: "enum", description: accepted };
   },
   min: (num) => (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if ((value as string).length < num)
-      return { error: 'min', description: num };
+      return { error: "min", description: num };
   },
   max: (num) => (value) => {
-    if (!checkType(value, 'string')) return;
+    if (!checkType(value, "string")) return;
     if ((value as string).length > num)
-      return { error: 'max', description: num };
+      return { error: "max", description: num };
   },
 };
 
@@ -83,49 +68,49 @@ export const string: StringRules = {
 export const number: MinMaxRuleSet<number> = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, 'number')) return { error: 'type' };
+    if (!checkType(value, "number")) return { error: "type" };
   },
   min: (num) => (value) => {
-    if (!checkType(value, 'number')) return;
-    if ((value as number) < num) return { error: 'min', description: num };
+    if (!checkType(value, "number")) return;
+    if ((value as number) < num) return { error: "min", description: num };
   },
   max: (num) => (value) => {
-    if (!checkType(value, 'number')) return;
-    if ((value as number) > num) return { error: 'max', description: num };
+    if (!checkType(value, "number")) return;
+    if ((value as number) > num) return { error: "max", description: num };
   },
 };
 
 export const array: MinMaxRuleSet<number> = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, 'array')) return { error: 'type' };
+    if (!checkType(value, "array")) return { error: "type" };
   },
   min: (num) => (value) => {
-    if (!checkType(value, 'array')) return;
+    if (!checkType(value, "array")) return;
     if ((value as unknown[]).length < num)
-      return { error: 'min', description: num };
+      return { error: "min", description: num };
   },
   max: (num) => (value) => {
-    if (!checkType(value, 'array')) return;
+    if (!checkType(value, "array")) return;
     if ((value as unknown[]).length > num)
-      return { error: 'max', description: num };
+      return { error: "max", description: num };
   },
 };
 
 export const boolean: BasicRuleSet = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, 'boolean')) return { error: 'type' };
+    if (!checkType(value, "boolean")) return { error: "type" };
   },
 };
 export const object: BasicRuleSet = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, 'object')) return { error: 'type' };
+    if (!checkType(value, "object")) return { error: "type" };
   },
 };
 export const required: Rule = (value) => {
-  if (!exists(value)) return { error: 'required' };
+  if (!exists(value)) return { error: "required" };
 };
 
 function isValidDate(value: string | number | Date): boolean {
@@ -140,16 +125,16 @@ function isValidDate(value: string | number | Date): boolean {
 
 export const datetime: MinMaxRuleSet<string> = {
   type: (value) => {
-    if (!isValidDate(value as number | string | Date)) return { error: 'type' };
+    if (!isValidDate(value as number | string | Date)) return { error: "type" };
   },
   min: (datetime) => (value) => {
     if (!isValidDate(value as number | string | Date)) return;
     if ((value as string) < datetime)
-      return { error: 'min', description: datetime };
+      return { error: "min", description: datetime };
   },
   max: (datetime) => (value) => {
     if (!isValidDate(value as number | string | Date)) return;
     if ((value as string) > datetime)
-      return { error: 'max', description: datetime };
+      return { error: "max", description: datetime };
   },
 };

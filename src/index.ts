@@ -1,11 +1,11 @@
-export * from './rules';
+export * from "./rules";
 import type {
   O,
   Rule,
   Schema,
   ValidationError,
   ValidationErrors,
-} from './types';
+} from "./types";
 
 // evaluate a single rule
 function evaluate(rules: Rule[], value: unknown, obj: O): ValidationError[] {
@@ -25,13 +25,13 @@ function exists(value: unknown): boolean {
 
 // function to get value from tokenized path
 function get(obj: O, path: string) {
-  const tokens = path.split('.');
+  const tokens = path.split(".");
   return tokens.reduce(
     (o: unknown, k: string) =>
-      o && typeof o === 'object' && exists((o as O)[k] as unknown)
+      o && typeof o === "object" && exists((o as O)[k] as unknown)
         ? ((o as Record<string, unknown>)[k] as unknown)
         : undefined,
-    obj
+    obj,
   );
 }
 
