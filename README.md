@@ -1,6 +1,6 @@
 # Opzet - JavaScript object validation
 
-![](https://github.com/kevtiq/opzet/workflows/test/badge.svg)
+![](https://github.com/vycke/opzet/workflows/test/badge.svg)
 [![Node version](https://img.shields.io/npm/v/opzet.svg?style=flat)](https://www.npmjs.com/package/opzet)
 [![NPM Downloads](https://img.shields.io/npm/dm/opzet.svg?style=flat)](https://www.npmjs.com/package/opzet)
 [![Minified size](https://img.shields.io/bundlephobia/min/opzet?label=minified)](https://www.npmjs.com/package/opzet)
@@ -17,8 +17,8 @@ type Schema = Record<string, Rule[]>;
 **Opzet** validates each individual rule in the schema. If a key of an object does not comply with one or more rules, all error messages are returned. This allows you to add an order to the rules as well.
 
 ```js
-import { validate, string, required } from 'opzet';
-const obj = { key: 'value' };
+import { validate, string, required } from "opzet";
+const obj = { key: "value" };
 const schema = { key: [string.type], required: [required, string.type] };
 validate(obj, schema);
 // returns { required: ['required', 'type'] };
@@ -29,7 +29,7 @@ validate(obj, schema);
 Opzet has a set of default rules build in.
 
 ```js
-import { string, number, boolean, object, array, required } from 'opzet';
+import { string, number, boolean, object, array, required } from "opzet";
 ```
 
 - `required`: checks if the value exists or not. If invalid, returns '_required_';
