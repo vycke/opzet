@@ -1,6 +1,6 @@
 # Opzet - JavaScript object validation
 
-![](https://github.com/vycke/opzet/workflows/test/badge.svg)
+![](https://github.com/vyckes/opzet/workflows/test/badge.svg)
 [![Node version](https://img.shields.io/npm/v/opzet.svg?style=flat)](https://www.npmjs.com/package/opzet)
 [![NPM Downloads](https://img.shields.io/npm/dm/opzet.svg?style=flat)](https://www.npmjs.com/package/opzet)
 [![Minified size](https://img.shields.io/bundlephobia/min/opzet?label=minified)](https://www.npmjs.com/package/opzet)
