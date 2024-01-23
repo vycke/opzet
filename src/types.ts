@@ -3,7 +3,7 @@ export type O = { [key: string]: unknown };
 export type ValidationError = string;
 export type ValidationErrors = { [key: string]: ValidationError };
 export type Rule = (value: unknown, obj?: O) => ValidationError | void;
-export type Schema = Record<string, Rule[]>;
+export type Schema<T extends object> = Partial<{ [k in keyof T]: Rule[] }>;
 // All default rules allowed on string values
 export type BasicRuleSet = { type: Rule };
 export type MinMaxRuleSet<T> = BasicRuleSet & {

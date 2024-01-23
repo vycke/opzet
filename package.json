@@ -1,6 +1,6 @@
 {
   "name": "opzet",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Object validation and transformation",
   "main": "dist/index.js",
   "module": "dist/index.js",

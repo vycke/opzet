@@ -1,5 +1,7 @@
 export * from "./rules";
 export * from "./errors";
+export * from "./types";
+
 import type {
   O,
   Rule,
@@ -43,11 +45,14 @@ function get(obj: O, path: string) {
 }
 
 // Function that does the actual valudation of the schema
-export function validate(obj: O, schema: Schema): ValidationErrors {
+export function validate<T extends object>(
+  obj: O,
+  schema: Schema<T>,
+): ValidationErrors {
   const errors: ValidationErrors = {};
 
   Object.entries(schema).forEach(([key, rules]) => {
-    const err = evaluate(rules, get(obj, key), obj);
+    const err = evaluate(rules as Rule[], get(obj, key), obj);
     if (!err) return;
     errors[key] = err;
   });
