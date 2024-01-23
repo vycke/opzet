@@ -1,10 +1,13 @@
 {
   "name": "opzet",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Object validation and transformation",
-  "type": "module",
-  "exports": "./dist",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest watch",

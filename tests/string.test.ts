@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { ERRORS_MESSAGES, string, validate } from "../src";
+import { ERROR_TYPES, string, validate } from "../src";
 
 test("string - type & length", () => {
   expect(
@@ -12,8 +12,8 @@ test("string - type & length", () => {
       },
     ),
   ).toEqual({
-    key1: ERRORS_MESSAGES.string.min,
-    key3: ERRORS_MESSAGES.type,
+    key1: ERROR_TYPES.string.min,
+    key3: ERROR_TYPES.type,
   });
 
   expect(
@@ -26,8 +26,8 @@ test("string - type & length", () => {
       },
     ),
   ).toEqual({
-    key1: ERRORS_MESSAGES.string.max,
-    key3: ERRORS_MESSAGES.type,
+    key1: ERROR_TYPES.string.max,
+    key3: ERROR_TYPES.type,
   });
 });
 
@@ -42,7 +42,7 @@ test("string - email", () => {
       },
     ),
   ).toEqual({
-    email1: ERRORS_MESSAGES.string.email,
+    email1: ERROR_TYPES.string.email,
   });
 });
 
@@ -56,7 +56,7 @@ test("string - url", () => {
         url3: [string.type, string.url],
       },
     ),
-  ).toEqual({ url1: ERRORS_MESSAGES.string.url });
+  ).toEqual({ url1: ERROR_TYPES.string.url });
 });
 
 test("string - uuid", () => {
@@ -70,7 +70,7 @@ test("string - uuid", () => {
       },
     ),
   ).toEqual({
-    uuid1: ERRORS_MESSAGES.string.uuid,
+    uuid1: ERROR_TYPES.string.uuid,
   });
 });
 
@@ -92,7 +92,7 @@ test("string - iban", () => {
       },
     ),
   ).toEqual({
-    iban4: ERRORS_MESSAGES.string.iban,
+    iban4: ERROR_TYPES.string.iban,
   });
 });
 
@@ -107,6 +107,6 @@ test("string - enum", () => {
       },
     ),
   ).toEqual({
-    enum1: ERRORS_MESSAGES.string.enum,
+    enum1: ERROR_TYPES.string.enum,
   });
 });

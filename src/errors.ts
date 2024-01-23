@@ -1,4 +1,4 @@
-export const ERRORS_MESSAGES = {
+export const ERROR_TYPES = {
   required: "required",
   type: "type",
   string: {
