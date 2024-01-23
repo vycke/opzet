@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { boolean, validate } from "../src";
+import { boolean, ERRORS_MESSAGES, validate } from "../src";
 
 test("boolean rules", () => {
   const obj = { bool1: true, bool2: "test" };
@@ -8,5 +8,5 @@ test("boolean rules", () => {
       bool1: [boolean.type],
       bool2: [boolean.type],
     }),
-  ).toEqual({ bool2: [{ error: "type" }] });
+  ).toEqual({ bool2: ERRORS_MESSAGES.type });
 });

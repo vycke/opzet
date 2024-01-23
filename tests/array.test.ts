@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { array, validate } from "../src";
+import { array, ERRORS_MESSAGES, validate } from "../src";
 
 test("array - type & length", () => {
   const obj = { state1: [], state3: {}, state4: "test" };
@@ -11,14 +11,15 @@ test("array - type & length", () => {
       state3: [array.type, array.min(0), array.max(3)],
       state4: [array.type, array.min(0), array.max(3)],
     }),
-  ).toEqual({ state3: [{ error: "type" }], state4: [{ error: "type" }] });
+  ).toEqual({ state3: ERRORS_MESSAGES.type, state4: ERRORS_MESSAGES.type });
 
   expect(
     validate(obj, { state1: [array.type, array.min(1), array.max(-3)] }),
   ).toEqual({
-    state1: [
-      { error: "min", description: 1 },
-      { error: "max", description: -3 },
-    ],
+    state1: ERRORS_MESSAGES.array.min,
+  });
+
+  expect(validate(obj, { state1: [array.type, array.max(-3)] })).toEqual({
+    state1: ERRORS_MESSAGES.array.max,
   });
 });

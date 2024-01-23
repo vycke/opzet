@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { string, validate } from "../src";
+import { ERRORS_MESSAGES, string, validate } from "../src";
 
 test("string - type & length", () => {
   expect(
@@ -12,11 +12,22 @@ test("string - type & length", () => {
       },
     ),
   ).toEqual({
-    key1: [
-      { error: "min", description: 7 },
-      { error: "max", description: 3 },
-    ],
-    key3: [{ error: "type" }],
+    key1: ERRORS_MESSAGES.string.min,
+    key3: ERRORS_MESSAGES.type,
+  });
+
+  expect(
+    validate(
+      { key1: "value", key2: "value", key3: 3 },
+      {
+        key1: [string.type, string.max(3)],
+        key2: [string.type, string.min(3), string.max(10)],
+        key3: [string.type, string.min(3), string.max(3)],
+      },
+    ),
+  ).toEqual({
+    key1: ERRORS_MESSAGES.string.max,
+    key3: ERRORS_MESSAGES.type,
   });
 });
 
@@ -31,7 +42,7 @@ test("string - email", () => {
       },
     ),
   ).toEqual({
-    email1: [{ error: "format", description: "email" }],
+    email1: ERRORS_MESSAGES.string.email,
   });
 });
 
@@ -45,7 +56,7 @@ test("string - url", () => {
         url3: [string.type, string.url],
       },
     ),
-  ).toEqual({ url1: [{ error: "format", description: "url" }] });
+  ).toEqual({ url1: ERRORS_MESSAGES.string.url });
 });
 
 test("string - uuid", () => {
@@ -59,7 +70,7 @@ test("string - uuid", () => {
       },
     ),
   ).toEqual({
-    uuid1: [{ error: "format", description: "uuid" }],
+    uuid1: ERRORS_MESSAGES.string.uuid,
   });
 });
 
@@ -81,7 +92,7 @@ test("string - iban", () => {
       },
     ),
   ).toEqual({
-    iban4: [{ error: "format", description: "iban" }],
+    iban4: ERRORS_MESSAGES.string.iban,
   });
 });
 
@@ -96,6 +107,6 @@ test("string - enum", () => {
       },
     ),
   ).toEqual({
-    enum1: [{ error: "enum", description: ["non"] }],
+    enum1: ERRORS_MESSAGES.string.enum,
   });
 });

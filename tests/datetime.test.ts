@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { datetime, validate } from "../src";
+import { datetime, ERRORS_MESSAGES, validate } from "../src";
 
 test("datetime - type", () => {
   const obj = {
@@ -15,7 +15,7 @@ test("datetime - type", () => {
       date3: [datetime.type],
       date4: [datetime.type],
     }),
-  ).toEqual({ date3: [{ error: "type" }] });
+  ).toEqual({ date3: ERRORS_MESSAGES.type });
 });
 
 test("datetime - min/max", () => {
@@ -44,10 +44,26 @@ test("datetime - min/max", () => {
       ],
     }),
   ).toEqual({
-    date2: [
-      { error: "max", description: "2021-01-01T00:00:00+00:00" },
-      { error: "min", description: "2023-01-01T00:00:00+00:00" },
-    ],
-    date3: [{ error: "type" }],
+    date2: ERRORS_MESSAGES.datetime.max,
+    date3: ERRORS_MESSAGES.type,
+  });
+
+  expect(
+    validate(obj, {
+      date1: [
+        datetime.type,
+        datetime.min("2021-01-01T00:00:00+00:00"),
+        datetime.max("2023-01-01T00:00:00+00:00"),
+      ],
+      date2: [datetime.type, datetime.min("2023-01-01T00:00:00+00:00")],
+      date3: [
+        datetime.type,
+        datetime.max("2021-01-01T00:00:00+00:00"),
+        datetime.min("2023-01-01T00:00:00+00:00"),
+      ],
+    }),
+  ).toEqual({
+    date2: ERRORS_MESSAGES.datetime.min,
+    date3: ERRORS_MESSAGES.type,
   });
 });

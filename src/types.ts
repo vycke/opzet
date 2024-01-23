@@ -1,7 +1,7 @@
 export type N = undefined | null;
 export type O = { [key: string]: unknown };
-export type ValidationError = { error: string; description?: unknown };
-export type ValidationErrors = { [key: string]: ValidationError[] };
+export type ValidationError = string;
+export type ValidationErrors = { [key: string]: ValidationError };
 export type Rule = (value: unknown, obj?: O) => ValidationError | void;
 export type Schema = Record<string, Rule[]>;
 // All default rules allowed on string values

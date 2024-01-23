@@ -1,4 +1,5 @@
 export * from "./rules";
+export * from "./errors";
 import type {
   O,
   Rule,
@@ -8,14 +9,20 @@ import type {
 } from "./types";
 
 // evaluate a single rule
-function evaluate(rules: Rule[], value: unknown, obj: O): ValidationError[] {
-  const errors: ValidationError[] = [];
-  rules.forEach((rule) => {
-    const res = rule(value, obj);
-    if (res) errors.push(res);
-  });
-
-  return errors;
+function evaluate(
+  rules: Rule[],
+  value: unknown,
+  obj: O,
+): ValidationError | undefined {
+  let error: ValidationError | undefined;
+  for (let i = 0; i < rules.length; i++) {
+    const res = rules[i](value, obj);
+    if (res) {
+      error = res;
+      break;
+    }
+  }
+  return error;
 }
 
 // helper that checks if a value exists (not null and not undefined)
@@ -40,9 +47,9 @@ export function validate(obj: O, schema: Schema): ValidationErrors {
   const errors: ValidationErrors = {};
 
   Object.entries(schema).forEach(([key, rules]) => {
-    const keyErrors = evaluate(rules, get(obj, key), obj);
-    if (!keyErrors.length) return;
-    errors[key] = keyErrors;
+    const err = evaluate(rules, get(obj, key), obj);
+    if (!err) return;
+    errors[key] = err;
   });
 
   return errors;

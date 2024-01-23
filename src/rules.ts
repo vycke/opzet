@@ -1,3 +1,4 @@
+import { ERRORS_MESSAGES } from "./errors";
 import { BasicRuleSet, MinMaxRuleSet, Rule, StringRules } from "./types";
 
 // Default Regex expresssions
@@ -25,42 +26,35 @@ function checkType(value: unknown, type: string): boolean {
 export const string: StringRules = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, "string")) return { error: "type" };
+    if (!checkType(value, "string")) return ERRORS_MESSAGES.type;
   },
   email: (value) => {
-    if (!checkType(value, "string")) return;
-    if (!(value as string).match(rEmail))
-      return { error: "format", description: "email" };
+    if (!exists(value)) return;
+    if (!(value as string).match(rEmail)) return ERRORS_MESSAGES.string.email;
   },
   url: (value) => {
-    if (!checkType(value, "string")) return;
-    if (!(value as string).match(rUrl))
-      return { error: "format", description: "url" };
+    if (!exists(value)) return;
+    if (!(value as string).match(rUrl)) return ERRORS_MESSAGES.string.url;
   },
   uuid: (value) => {
-    if (!checkType(value, "string")) return;
-    if (!(value as string).match(rUUID))
-      return { error: "format", description: "uuid" };
+    if (!exists(value)) return;
+    if (!(value as string).match(rUUID)) return ERRORS_MESSAGES.string.uuid;
   },
   iban: (value) => {
-    if (!checkType(value, "string")) return;
-    if (!(value as string).match(rIBAN))
-      return { error: "format", description: "iban" };
+    if (!exists(value)) return;
+    if (!(value as string).match(rIBAN)) return ERRORS_MESSAGES.string.iban;
   },
   enum: (accepted) => (value) => {
-    if (!checkType(value, "string")) return;
-    if (!accepted.includes(value as string))
-      return { error: "enum", description: accepted };
+    if (!exists(value)) return;
+    if (!accepted.includes(value as string)) return ERRORS_MESSAGES.string.enum;
   },
   min: (num) => (value) => {
-    if (!checkType(value, "string")) return;
-    if ((value as string).length < num)
-      return { error: "min", description: num };
+    if (!exists(value)) return;
+    if ((value as string).length < num) return ERRORS_MESSAGES.string.min;
   },
   max: (num) => (value) => {
-    if (!checkType(value, "string")) return;
-    if ((value as string).length > num)
-      return { error: "max", description: num };
+    if (!exists(value)) return;
+    if ((value as string).length > num) return ERRORS_MESSAGES.string.max;
   },
 };
 
@@ -68,49 +62,47 @@ export const string: StringRules = {
 export const number: MinMaxRuleSet<number> = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, "number")) return { error: "type" };
+    if (!checkType(value, "number")) return ERRORS_MESSAGES.type;
   },
   min: (num) => (value) => {
-    if (!checkType(value, "number")) return;
-    if ((value as number) < num) return { error: "min", description: num };
+    if (!exists(value)) return;
+    if ((value as number) < num) return ERRORS_MESSAGES.number.min;
   },
   max: (num) => (value) => {
-    if (!checkType(value, "number")) return;
-    if ((value as number) > num) return { error: "max", description: num };
+    if (!exists(value)) return;
+    if ((value as number) > num) return ERRORS_MESSAGES.number.max;
   },
 };
 
 export const array: MinMaxRuleSet<number> = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, "array")) return { error: "type" };
+    if (!checkType(value, "array")) return ERRORS_MESSAGES.type;
   },
   min: (num) => (value) => {
-    if (!checkType(value, "array")) return;
-    if ((value as unknown[]).length < num)
-      return { error: "min", description: num };
+    if (!exists(value)) return;
+    if ((value as unknown[])?.length < num) return ERRORS_MESSAGES.array.min;
   },
   max: (num) => (value) => {
-    if (!checkType(value, "array")) return;
-    if ((value as unknown[]).length > num)
-      return { error: "max", description: num };
+    if (!exists(value)) return;
+    if ((value as unknown[])?.length > num) return ERRORS_MESSAGES.array.max;
   },
 };
 
 export const boolean: BasicRuleSet = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, "boolean")) return { error: "type" };
+    if (!checkType(value, "boolean")) return ERRORS_MESSAGES.type;
   },
 };
 export const object: BasicRuleSet = {
   type: (value) => {
     if (!exists(value)) return;
-    if (!checkType(value, "object")) return { error: "type" };
+    if (!checkType(value, "object")) return ERRORS_MESSAGES.type;
   },
 };
 export const required: Rule = (value) => {
-  if (!exists(value)) return { error: "required" };
+  if (!exists(value)) return ERRORS_MESSAGES.required;
 };
 
 function isValidDate(value: string | number | Date): boolean {
@@ -125,16 +117,15 @@ function isValidDate(value: string | number | Date): boolean {
 
 export const datetime: MinMaxRuleSet<string> = {
   type: (value) => {
-    if (!isValidDate(value as number | string | Date)) return { error: "type" };
+    if (!isValidDate(value as number | string | Date))
+      return ERRORS_MESSAGES.type;
   },
   min: (datetime) => (value) => {
-    if (!isValidDate(value as number | string | Date)) return;
-    if ((value as string) < datetime)
-      return { error: "min", description: datetime };
+    if (!exists(value)) return;
+    if ((value as string) < datetime) return ERRORS_MESSAGES.datetime.min;
   },
   max: (datetime) => (value) => {
-    if (!isValidDate(value as number | string | Date)) return;
-    if ((value as string) > datetime)
-      return { error: "max", description: datetime };
+    if (!exists(value)) return;
+    if ((value as string) > datetime) return ERRORS_MESSAGES.datetime.max;
   },
 };

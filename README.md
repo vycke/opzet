@@ -9,7 +9,7 @@
 A lightweight library that allows for object schema validation. A schema is an object where the keys match the keys of the object you want to validate. Within the schema, each key has an array of 'rules' attached. A rule is simply something that returns nothing or a 'string' indicating the error.
 
 ```ts
-type ValidationError = { error: string; description?: unknown };
+type ValidationError = string;
 type Rule = (value: unknown, obj?: object) => ValidationError | null;
 type Schema = Record<string, Rule[]>;
 ```
@@ -21,7 +21,7 @@ import { validate, string, required } from "opzet";
 const obj = { key: "value" };
 const schema = { key: [string.type], required: [required, string.type] };
 validate(obj, schema);
-// returns { required: ['required', 'type'] };
+// returns { required: 'required' };
 ```
 
 ## Default rules
@@ -33,10 +33,10 @@ import { string, number, boolean, object, array, required } from "opzet";
 ```
 
 - `required`: checks if the value exists or not. If invalid, returns '_required_';
-- `<string|number|boolean|object|array|datetime>.type`: checks if the value is of the correct type. If invalid, returns 'type';
-- `<string|number|array|datetime>.min(num: number | date)`: checks the (inclusive) minimum value/length (e.g. `array.length <= num`). Should be applied as `array.min(3)`. If invalid, returns '_min_';
-- `<string|number|array|datetime>.max(num: number | date)`: checks the (inclusive) maximum value/length (e.g. `array.length <= num`). Should be applied as `array.max(3)`. If invalid, returns '_max_';
-- `string.<email|url|uuid|iban>`: checks if the value is within the correct format. If invalid, returns '_format_';
-- `string.enum(allowed: string[])`: checks if the value is one of the allowed string values. If invalid, returns '_enum_';
+- `<string|number|boolean|object|array|datetime>.type`: checks if the value is of the correct type. If invalid, returns '_type_';
+- `<string|number|array|datetime>.min(num: number | date)`: checks the (inclusive) minimum value/length (e.g. `array.length <= num`). Should be applied as `array.min(3)`. If invalid, returns '_<type>.min_';
+- `<string|number|array|datetime>.max(num: number | date)`: checks the (inclusive) maximum value/length (e.g. `array.length <= num`). Should be applied as `array.max(3)`. If invalid, returns '_<type>.max_';
+- `string.<email|url|uuid|iban>`: checks if the value is within the correct format. If invalid, returns '_string.<type>_';
+- `string.enum(allowed: string[])`: checks if the value is one of the allowed string values. If invalid, returns '_string.enum_';
 
 For examples, check the [tests](./tests/index.tests.ts).
