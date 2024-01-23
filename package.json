@@ -19,7 +19,12 @@
     "type": "git",
     "url": "git+https://github.com/vyckes/opzet.git"
   },
-  "keywords": ["validation", "normalisation", "deduction", "transformation"],
+  "keywords": [
+    "validation",
+    "normalisation",
+    "deduction",
+    "transformation"
+  ],
   "author": "Kevin Pennekamp <hello@vyckes.dev>",
   "license": "MIT",
   "bugs": {
