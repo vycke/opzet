@@ -48,7 +48,7 @@ function get(obj: O, path: string) {
 export function validate<T extends object>(
   obj: O,
   schema: Schema<T>,
-): ValidationErrors {
+): ValidationErrors | undefined {
   const errors: ValidationErrors = {};
 
   Object.entries(schema).forEach(([key, rules]) => {
@@ -57,5 +57,6 @@ export function validate<T extends object>(
     errors[key] = err;
   });
 
-  return errors;
+  if (Object.keys(errors).length > 0) return errors;
+  return undefined;
 }
