@@ -17,17 +17,20 @@ function exists(value: unknown): boolean {
   return value !== undefined && value !== null;
 }
 
-function isValidNumber(value: string | number): boolean {
-  if (typeof value === "number") return !isNaN(value);
-  if (typeof value === "string") return !isNaN(parseFloat(value));
-  return false;
+function parseNumber(value: unknown): number {
+  if (typeof value === "number") return value;
+  if (typeof value === "string") return parseFloat(value);
+  return NaN;
+}
+
+function isValidNumber(value: unknown): boolean {
+  return !isNaN(parseNumber(value));
 }
 
 function checkType(value: unknown, type: string): boolean {
   if (type === "array")
     return exists(value) && typeof value === "object" && Array.isArray(value);
-  if (type === "number")
-    return exists(value) && isValidNumber(value as string | number);
+  if (type === "number") return exists(value) && isValidNumber(value);
   return exists(value) && typeof value === type;
 }
 
@@ -74,11 +77,11 @@ export const number: MinMaxRuleSet<number> = {
   },
   min: (num) => (value) => {
     if (!exists(value)) return;
-    if ((value as number) < num) return ERROR_CODES.number.min;
+    if (parseNumber(value) < num) return ERROR_CODES.number.min;
   },
   max: (num) => (value) => {
     if (!exists(value)) return;
-    if ((value as number) > num) return ERROR_CODES.number.max;
+    if (parseNumber(value) > num) return ERROR_CODES.number.max;
   },
 };
 
