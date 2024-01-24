@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { ERROR_TYPES, object, validate } from "../src";
+import { ERROR_CODES, object, validate } from "../src";
 
 test("object rules", () => {
   const obj = { key1: {}, key2: "test" };
@@ -8,5 +8,5 @@ test("object rules", () => {
       key1: [object.type],
       key2: [object.type],
     }),
-  ).toEqual({ key2: ERROR_TYPES.type });
+  ).toEqual({ key2: ERROR_CODES.type });
 });

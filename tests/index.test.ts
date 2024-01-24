@@ -1,5 +1,5 @@
 import { test, expect } from "vitest";
-import { ERROR_TYPES, validate } from "../src";
+import { ERROR_CODES, validate } from "../src";
 import { string, object, boolean, required } from "../src/rules";
 import { Rule, Schema } from "../src/types";
 
@@ -12,5 +12,5 @@ test("simple validate, including nested values", () => {
     required: [required],
   };
   expect(validate(obj, schema)).toEqual(undefined);
-  expect(validate({}, schema)).toEqual({ required: ERROR_TYPES.required });
+  expect(validate({}, schema)).toEqual({ required: ERROR_CODES.required });
 });

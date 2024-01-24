@@ -1,6 +1,7 @@
-export const ERROR_TYPES = {
+export const ERROR_CODES = {
   required: "required",
   type: "type",
+  unique: "unique",
   string: {
     format: "string.format",
     email: "string.email",
