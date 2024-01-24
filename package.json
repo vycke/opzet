@@ -12,7 +12,7 @@
     "build": "npm run clean && tsc && esbuild src/index.ts --outdir=dist",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "prepublish": "npm run build",
-    "prettier": "prettier --ignore-path .gitignore --check \"**/*.+(js|json|ts|tsx)\"",
+    "prettier": "prettier --ignore-path .gitignore --check \"**/*.+(js|ts|tsx)\"",
     "lint": "eslint --ignore-path .gitignore .",
     "validate": "npm-run-all --parallel prettier lint test build"
   },
