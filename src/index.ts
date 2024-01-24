@@ -49,7 +49,7 @@ export function validate<T extends object>(
   obj: O,
   schema: Schema<T>,
 ): ValidationErrors<T> | undefined {
-  const errors: ValidationErrors = {};
+  const errors: ValidationErrors<T> = {};
 
   Object.entries(schema).forEach(([key, rules]) => {
     const err = evaluate(rules as Rule[], get(obj, key), obj);
