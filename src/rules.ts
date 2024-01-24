@@ -110,7 +110,7 @@ export const object: BasicRuleSet = {
   },
 };
 export const required: Rule = (value) => {
-  if (!exists(value) && value !== "") return ERROR_CODES.required;
+  if (!exists(value) || value === "") return ERROR_CODES.required;
 };
 
 function isValidDate(value: string | number | Date): boolean {
