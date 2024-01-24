@@ -1,11 +1,13 @@
 {
   "name": "opzet",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "description": "Object validation and transformation",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest watch",
@@ -20,7 +22,12 @@
     "type": "git",
     "url": "git+https://github.com/vyckes/opzet.git"
   },
-  "keywords": ["validation", "normalisation", "deduction", "transformation"],
+  "keywords": [
+    "validation",
+    "normalisation",
+    "deduction",
+    "transformation"
+  ],
   "author": "Kevin Pennekamp <hello@vyckes.dev>",
   "license": "MIT",
   "bugs": {
